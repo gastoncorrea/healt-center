@@ -33,4 +33,8 @@ public class Terapeuta {
     @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<DisponibilidadTerapeuta> disponibilidades;
+    
+    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Turnos> turnos;
 }
