@@ -23,6 +23,8 @@ public class Turnos {
     private Long id_turno;
     @Column(columnDefinition = "DATE")
     private LocalDate fecha;
+    @Column(columnDefinition = "VARCHAR(50)")
+    private String dia;
     @Column(columnDefinition = "TIME")
     private LocalTime hora_inicio;
     @Column(columnDefinition = "TIME")
