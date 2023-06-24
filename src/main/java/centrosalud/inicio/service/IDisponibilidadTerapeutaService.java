@@ -19,10 +19,5 @@ public interface IDisponibilidadTerapeutaService {
     
     public void borrarUnaDisponibilidad(Long id);
     
-    public List<DisponibilidadTerapeuta> disponibilidadUnTerapeuta(Long id);
-    
-    public List<LocalTime> cantidadTurnos(DisponibilidadTerapeuta disponibilidad);
-    
-    public List<LocalDate> fechasProximas(DayOfWeek dia);
     
 }

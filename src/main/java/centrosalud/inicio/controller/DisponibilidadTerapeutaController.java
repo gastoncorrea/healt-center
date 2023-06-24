@@ -1,11 +1,9 @@
 
 package centrosalud.inicio.controller;
 
-import centrosalud.inicio.dto.TurnosDisponiblesDTO;
 import centrosalud.inicio.model.DisponibilidadTerapeuta;
 import centrosalud.inicio.service.IDisponibilidadTerapeutaService;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -60,25 +58,6 @@ public class DisponibilidadTerapeutaController {
         return "Disponibilidad Eliminada";
     }
     
-    @GetMapping("/disponibilidad-terapeuta/{id}")
-    public List<TurnosDisponiblesDTO> disponibilidadTerapeuta(@PathVariable Long id){
-        
-        List<DisponibilidadTerapeuta> disponibilidadBruta = disponibilidadService.disponibilidadUnTerapeuta(id);
-        List<TurnosDisponiblesDTO> disponibilidadNeta = new ArrayList<>();
-        
-        
-        for (DisponibilidadTerapeuta disp : disponibilidadBruta){
-            TurnosDisponiblesDTO turno = new TurnosDisponiblesDTO();
-            turno.setFecha(disp.getFecha());
-            turno.setDia(disp.getDia());
-            turno.setHora_inicio(disp.getHora_inicio());
-            turno.setHora_fin(disp.getHora_fin());
-            turno.setCantidadTurnos(disponibilidadService.cantidadTurnos(disp));
-            
-            disponibilidadNeta.add(turno);
-        }
-        
-        return disponibilidadNeta;
-    }
+    
     
 }
