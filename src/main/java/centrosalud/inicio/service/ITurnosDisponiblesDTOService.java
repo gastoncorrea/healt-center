@@ -24,4 +24,6 @@ public interface ITurnosDisponiblesDTOService {
     public List<LocalDate> fechasProximas(DayOfWeek dia);
     
     public List<TurnosDisponiblesDTO> cantidadTurnosPorDia(List<DisponibilidadTerapeuta> disponibilidadBruta);
+    
+    public List<LocalDate> fechaMasCercana(DayOfWeek dia);
 }

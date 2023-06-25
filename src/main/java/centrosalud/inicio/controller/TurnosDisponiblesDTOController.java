@@ -3,7 +3,6 @@ package centrosalud.inicio.controller;
 
 import centrosalud.inicio.dto.TurnosDisponiblesDTO;
 import centrosalud.inicio.model.DisponibilidadTerapeuta;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

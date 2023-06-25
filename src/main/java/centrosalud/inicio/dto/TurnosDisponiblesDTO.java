@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter @Setter
 public class TurnosDisponiblesDTO implements Serializable{
     
-    private LocalDate fecha;
+    private List<LocalDate> fecha;
     private String dia;
     private LocalTime hora_inicio;
     private LocalTime hora_fin;

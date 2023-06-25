@@ -3,6 +3,7 @@ package centrosalud.inicio.controller;
 
 import centrosalud.inicio.model.DisponibilidadTerapeuta;
 import centrosalud.inicio.service.IDisponibilidadTerapeutaService;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class DisponibilidadTerapeutaController {
     
     @PutMapping("/update/{id}")
     public DisponibilidadTerapeuta unaDisponibilidad(@PathVariable Long id,
-                                                        @RequestParam("dia") String nuevoDia,
+                                                        @RequestParam("dia") DayOfWeek nuevoDia,
                                                         @RequestParam("hora_inicio") LocalTime nuevaHora,
                                                         @RequestParam("hora_fin") LocalTime nuevaHoraFin){
         
