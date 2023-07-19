@@ -26,7 +26,7 @@ public class Paciente {
     private String nombre;
     @Column(columnDefinition = "VARCHAR(50)")
     private String apellido;
-    @Column(columnDefinition = "DATETIME")
+    @Column(columnDefinition = "DATE")
     private LocalDate fecha_nac;
     @Column(columnDefinition = "INT")
     private int dni;
@@ -34,6 +34,8 @@ public class Paciente {
     private String email;
     @Column(columnDefinition = "INT")
     private int telefono;
+    @Column(columnDefinition = "VARCHAR(50)")
+    private String obra_social;
     
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

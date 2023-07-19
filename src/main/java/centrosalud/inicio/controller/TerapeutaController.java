@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/terapeuta")
@@ -25,7 +26,7 @@ public class TerapeutaController {
     private ITerapeutaService terapeutaService;
     
     @PostMapping("/save")
-    public String nuevoTerapeuta(@RequestBody Terapeuta terapeuta){
+    public String nuevoTerapeuta(@RequestBody Terapeuta terapeuta){       
         terapeutaService.nuevoTerapeuta(terapeuta);
         return "Terapeuta creado con exito";
     }
