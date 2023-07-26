@@ -1,10 +1,11 @@
-
 package centrosalud.inicio.controller;
 
 import centrosalud.inicio.model.Terapeuta;
 import centrosalud.inicio.service.ITerapeutaService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,54 +17,71 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/terapeuta")
 public class TerapeutaController {
-    
+
     @Autowired
     private ITerapeutaService terapeutaService;
-    
+
     @PostMapping("/save")
-    public String nuevoTerapeuta(@RequestBody Terapeuta terapeuta){       
+    public ResponseEntity<String> nuevoTerapeuta(@RequestBody Terapeuta terapeuta) {
         terapeutaService.nuevoTerapeuta(terapeuta);
-        return "Terapeuta creado con exito";
+        return ResponseEntity.status(HttpStatus.CREATED).body("Terapeuta creado con exito");
     }
-    
+
     @GetMapping("/all")
-    public List<Terapeuta> listaDeTerapeutas(){
+    public ResponseEntity<List<Terapeuta>> listaDeTerapeutas() {
         List<Terapeuta> terapeutas = terapeutaService.todosLosTerapeutas();
-        return terapeutas;
+        return ResponseEntity.ok(terapeutas);
     }
-    
+
     @GetMapping("/find/{id}")
-    public  Terapeuta unTerapueta(@PathVariable Long id){
+    public ResponseEntity<Terapeuta> unTerapueta(@PathVariable Long id) {
         Terapeuta terapeuta = terapeutaService.encontrarUnTerapeuta(id);
-        return terapeuta;
+        if (terapeuta != null) {
+            return ResponseEntity.ok(terapeuta); // Respuesta con código de estado 200 (OK)
+        } else {
+            Terapeuta terapeutaError = new Terapeuta();
+            String mensajeError = "El terapeuta con el ID " + id + " no existe.";
+            terapeutaError.setNombre(mensajeError);//llevo el error en el atributo nombre del objeto terapeuta
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(terapeuta);
+        }
     }
-    
+
     @DeleteMapping("/delete/{id}")
-    public String borrarTerapeuta(@PathVariable Long id){
+    public ResponseEntity<String> borrarTerapeuta(@PathVariable Long id) {
         terapeutaService.eliminarUnTerapeuta(id);
-        return "Terapeuta eliminado";
+        return ResponseEntity.ok("Terapeuta eliminado");
     }
-    
+
     @PutMapping("/update/{id}")
-    public Terapeuta modificarTerapeuta(@PathVariable Long id,
-                                        @RequestParam("nombre") String nuevoNombre,
-                                        @RequestParam("apellido")String nuevoApellido,
-                                        @RequestParam("email")String nuevoEmail,
-                                        @RequestParam("terapia") String nuevaTerapia){
-        
+    public ResponseEntity<Terapeuta> modificarTerapeuta(@PathVariable Long id,
+            @RequestParam("nombre") String nuevoNombre,
+            @RequestParam("apellido") String nuevoApellido,
+            @RequestParam("descripcion_terapia") String nuevaDescripcion,
+            @RequestParam("imagen_perfil") byte[] nuevaImagen,
+            @RequestParam("email") String nuevoEmail,
+            @RequestParam("terapia") String nuevaTerapia) {
+
         Terapeuta terapeuta = terapeutaService.encontrarUnTerapeuta(id);
-        terapeuta.setNombre(nuevoNombre);
-        terapeuta.setApellido(nuevoApellido);
-        terapeuta.setEmail(nuevoEmail);
-        terapeuta.setTerapia(nuevaTerapia);
-        
-        terapeutaService.nuevoTerapeuta(terapeuta);
-        
-        return terapeuta;
+        if (terapeuta != null) {
+            terapeuta.setNombre(nuevoNombre);
+            terapeuta.setApellido(nuevoApellido);
+            terapeuta.setDescripcion_terapia(nuevaTerapia);
+            terapeuta.setImagen_perfil(nuevaImagen);
+            terapeuta.setEmail(nuevoEmail);
+            terapeuta.setTerapia(nuevaTerapia);
+
+            terapeutaService.nuevoTerapeuta(terapeuta);
+            return ResponseEntity.ok(terapeuta);
+        } else {
+            Terapeuta terapeutaError = new Terapeuta();
+            String mensajeError = "El terapeuta con el ID " + id + " no existe.";
+            terapeutaError.setNombre(mensajeError);//llevo el error en el atributo nombre del objeto terapeuta
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(terapeuta);
+        }
+
     }
 }

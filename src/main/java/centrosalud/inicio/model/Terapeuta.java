@@ -37,7 +37,7 @@ public class Terapeuta {
     @Column(columnDefinition = "VARCHAR(50)")
     private String terapia;
     
-    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<DisponibilidadTerapeuta> disponibilidades;
     
