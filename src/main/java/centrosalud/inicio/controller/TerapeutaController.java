@@ -58,21 +58,16 @@ public class TerapeutaController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Terapeuta> modificarTerapeuta(@PathVariable Long id,
-            @RequestParam("nombre") String nuevoNombre,
-            @RequestParam("apellido") String nuevoApellido,
-            @RequestParam("descripcion_terapia") String nuevaDescripcion,
-            @RequestParam("imagen_perfil") byte[] nuevaImagen,
-            @RequestParam("email") String nuevoEmail,
-            @RequestParam("terapia") String nuevaTerapia) {
+            @RequestBody Terapeuta nuevoTerapeuta) {
 
         Terapeuta terapeuta = terapeutaService.encontrarUnTerapeuta(id);
         if (terapeuta != null) {
-            terapeuta.setNombre(nuevoNombre);
-            terapeuta.setApellido(nuevoApellido);
-            terapeuta.setDescripcion_terapia(nuevaTerapia);
-            terapeuta.setImagen_perfil(nuevaImagen);
-            terapeuta.setEmail(nuevoEmail);
-            terapeuta.setTerapia(nuevaTerapia);
+            terapeuta.setNombre(nuevoTerapeuta.getNombre());
+            terapeuta.setApellido(nuevoTerapeuta.getApellido());
+            terapeuta.setDescripcion_terapia(nuevoTerapeuta.getDescripcion_terapia());
+            terapeuta.setImagen_perfil(nuevoTerapeuta.getImagen_perfil());
+            terapeuta.setEmail(nuevoTerapeuta.getEmail());
+            terapeuta.setTerapia(nuevoTerapeuta.getTerapia());
 
             terapeutaService.nuevoTerapeuta(terapeuta);
             return ResponseEntity.ok(terapeuta);
