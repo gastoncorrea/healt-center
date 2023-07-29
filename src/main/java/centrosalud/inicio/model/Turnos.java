@@ -31,8 +31,8 @@ public class Turnos {
     private LocalTime tiempo_consulta;
     
     @ManyToOne
-    @JoinColumn(name = "id_paciente")
-    private Paciente paciente;
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
     
     @ManyToOne
     @JoinColumn(name = "id_terapeuta")

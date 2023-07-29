@@ -1,11 +1,11 @@
 
 package centrosalud.inicio.repository;
 
-import centrosalud.inicio.model.Paciente;
+import centrosalud.inicio.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PacienteRepository extends JpaRepository<Paciente,Long>{
+public interface UsuarioRepository extends JpaRepository<Usuario,Long>{
     
 }

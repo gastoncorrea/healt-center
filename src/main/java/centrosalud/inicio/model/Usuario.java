@@ -17,11 +17,11 @@ import lombok.Setter;
 
 @Getter @Setter
 @Entity
-@Table(name = "Paciente")
-public class Paciente {
+@Table(name = "usuarios")
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id_paciente;
+    private Long id_usuario;
     @Column(columnDefinition = "VARCHAR(50)")
     private String nombre;
     @Column(columnDefinition = "VARCHAR(50)")
@@ -37,7 +37,7 @@ public class Paciente {
     @Column(columnDefinition = "VARCHAR(50)")
     private String obra_social;
     
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Turnos> turnos;
 }

@@ -1,7 +1,6 @@
 package centrosalud.inicio.controller;
 
-import centrosalud.inicio.model.Paciente;
-import centrosalud.inicio.service.IPacienteService;
+import centrosalud.inicio.model.Usuario;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +16,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import centrosalud.inicio.service.IUsuarioService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/paciente")
-public class PacienteController {
+@RequestMapping("/usuarios")
+public class UsuarioController {
 
     @Autowired
-    private IPacienteService pacienteService;
+    private IUsuarioService pacienteService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> nuevoPaciente(@RequestBody Paciente paciente) {
+    public ResponseEntity<String> nuevoPaciente(@RequestBody Usuario paciente) {
         pacienteService.crearPaciente(paciente);
         return ResponseEntity.ok("Paciente creado con exito");
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Paciente>> todosLosPacientes() {
-        List<Paciente> listaDePacientes = pacienteService.traerTodosLosPacientes();
+    public ResponseEntity<List<Usuario>> todosLosPacientes() {
+        List<Usuario> listaDePacientes = pacienteService.traerTodosLosPacientes();
         if (listaDePacientes != null) {
             return ResponseEntity.ok(listaDePacientes);
         } else {
@@ -44,12 +44,12 @@ public class PacienteController {
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Paciente> unPaciente(@PathVariable Long id) {
-        Paciente paciente = pacienteService.encontrarUnPaciente(id);
+    public ResponseEntity<Usuario> unPaciente(@PathVariable Long id) {
+        Usuario paciente = pacienteService.encontrarUnPaciente(id);
         if (paciente != null) {
             return ResponseEntity.ok(paciente); // Respuesta con código de estado 200 (OK)
         } else {
-            Paciente pacienteError = new Paciente();
+            Usuario pacienteError = new Usuario();
             String mensajeError = "El paciente con el ID " + id + " no existe.";
             pacienteError.setNombre(mensajeError);//llevo el error en el atributo nombre del objeto terapeuta
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(paciente);
@@ -63,7 +63,7 @@ public class PacienteController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Paciente> modificarPaciente(@PathVariable Long id,
+    public ResponseEntity<Usuario> modificarPaciente(@PathVariable Long id,
             @RequestParam("nombre") String nuevoNombre,
             @RequestParam("apellido") String nuevoApellido,
             @RequestParam("fecha_nac") LocalDate nuevaFecha,
@@ -71,7 +71,7 @@ public class PacienteController {
             @RequestParam("email") String nuevoEmail,
             @RequestParam("telefono") int nuevoTelefono) {
 
-        Paciente paciente = pacienteService.encontrarUnPaciente(id);
+        Usuario paciente = pacienteService.encontrarUnPaciente(id);
         if (paciente != null) {
             paciente.setNombre(nuevoNombre);
             paciente.setApellido(nuevoApellido);
@@ -84,7 +84,7 @@ public class PacienteController {
 
             return ResponseEntity.ok(paciente);
         } else {
-            Paciente pacienteError = new Paciente();
+            Usuario pacienteError = new Usuario();
             String mensajeError = "El paciente con el ID " + id + " no existe.";
             pacienteError.setNombre(mensajeError);//llevo el error en el atributo nombre del objeto terapeuta
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(paciente);

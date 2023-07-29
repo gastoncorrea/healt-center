@@ -1,37 +1,37 @@
 
 package centrosalud.inicio.service;
 
-import centrosalud.inicio.model.Paciente;
-import centrosalud.inicio.repository.PacienteRepository;
+import centrosalud.inicio.model.Usuario;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import centrosalud.inicio.repository.UsuarioRepository;
 
 @Service
-public class PacienteService implements IPacienteService {
+public class UsuarioService implements IUsuarioService {
     
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private UsuarioRepository pacienteRepository;
 
     @Override
-    public void crearPaciente(Paciente paciente) {
+    public void crearPaciente(Usuario paciente) {
         
         pacienteRepository.save(paciente);
         
     }
 
     @Override
-    public List<Paciente> traerTodosLosPacientes() {
+    public List<Usuario> traerTodosLosPacientes() {
         
-        List<Paciente> listaPacientes = pacienteRepository.findAll();
+        List<Usuario> listaPacientes = pacienteRepository.findAll();
         return listaPacientes;
         
     }
 
     @Override
-    public Paciente encontrarUnPaciente(Long id) {
+    public Usuario encontrarUnPaciente(Long id) {
         
-        Paciente pacienteEncontrado = pacienteRepository.findById(id).orElse(null);
+        Usuario pacienteEncontrado = pacienteRepository.findById(id).orElse(null);
         return pacienteEncontrado;
         
     }
