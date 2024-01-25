@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.sql.Blob;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +19,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "terapeutas")
 public class Terapeuta {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id_terapeuta;
@@ -27,15 +27,13 @@ public class Terapeuta {
     private String nombre;
     @Column(columnDefinition = "VARCHAR(50)")
     private String apellido;
-    @Column(columnDefinition = "VARCHAR(300)")
-    private String descripcion_terapia;
+    @Column(columnDefinition = "INT")
+    private Long profesion_idTerapia;
     @Lob // Indica que el atributo puede almacenar datos grandes (como imágenes)
     @Column(name = "imagen_perfil", columnDefinition = "LONGBLOB")
     private byte[] imagen_perfil;
     @Column(columnDefinition = "VARCHAR(50)")
     private String email;
-    @Column(columnDefinition = "VARCHAR(50)")
-    private String terapia;
     
     @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL)
     @JsonIgnore

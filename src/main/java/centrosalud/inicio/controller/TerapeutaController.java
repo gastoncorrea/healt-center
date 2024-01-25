@@ -64,10 +64,9 @@ public class TerapeutaController {
         if (terapeuta != null) {
             terapeuta.setNombre(nuevoTerapeuta.getNombre());
             terapeuta.setApellido(nuevoTerapeuta.getApellido());
-            terapeuta.setDescripcion_terapia(nuevoTerapeuta.getDescripcion_terapia());
+            terapeuta.setProfesion_idTerapia(nuevoTerapeuta.getProfesion_idTerapia());
             terapeuta.setImagen_perfil(nuevoTerapeuta.getImagen_perfil());
             terapeuta.setEmail(nuevoTerapeuta.getEmail());
-            terapeuta.setTerapia(nuevoTerapeuta.getTerapia());
 
             terapeutaService.nuevoTerapeuta(terapeuta);
             return ResponseEntity.ok(terapeuta);
