@@ -67,19 +67,15 @@ public class UsuarioController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Usuario> modificarPaciente(@PathVariable Long id,
-            @RequestParam("nombre") String nuevoNombre,
-            @RequestParam("apellido") String nuevoApellido,
-            @RequestParam("nombre_usuario") String nuevoNombreUsuario,
-            @RequestParam("email") String nuevoEmail,
-            @RequestParam("password") String nuevoPassword) {
+            @RequestBody Usuario nuevoUsuario) {
 
         Usuario usuario = usuarioService.encontrarUnPaciente(id);
         if (usuario != null) {
-            usuario.setNombre(nuevoNombre);
-            usuario.setApellido(nuevoApellido);
-            usuario.setNombre_usuario(nuevoNombreUsuario);
-            usuario.setEmail(nuevoEmail);
-            usuario.setPassword(nuevoPassword);
+            usuario.setNombre(nuevoUsuario.getNombre());
+            usuario.setApellido(nuevoUsuario.getApellido());
+            usuario.setNombre_usuario(nuevoUsuario.getNombre_usuario());
+            usuario.setEmail(nuevoUsuario.getEmail());
+            usuario.setPassword(nuevoUsuario.getPassword());
 
             usuarioService.crearPaciente(usuario);
 
