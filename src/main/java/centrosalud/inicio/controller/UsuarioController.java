@@ -20,21 +20,24 @@ import centrosalud.inicio.service.IUsuarioService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/usuarios")
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     @Autowired
-    private IUsuarioService pacienteService;
+    private IUsuarioService usuarioService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> nuevoPaciente(@RequestBody Usuario paciente) {
-        pacienteService.crearPaciente(paciente);
-        return ResponseEntity.ok("Paciente creado con exito");
+    public ResponseEntity<String> nuevoPaciente(@RequestBody Usuario usuario) {
+        if(usuario.getId_tipoUsuario()== null){
+            usuario.setId_tipoUsuario(Long.valueOf(0));
+        }
+        usuarioService.crearPaciente(usuario);
+        return ResponseEntity.ok("Usuario creado con exito");
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<Usuario>> todosLosPacientes() {
-        List<Usuario> listaDePacientes = pacienteService.traerTodosLosPacientes();
+        List<Usuario> listaDePacientes = usuarioService.traerTodosLosPacientes();
         if (listaDePacientes != null) {
             return ResponseEntity.ok(listaDePacientes);
         } else {
@@ -45,7 +48,7 @@ public class UsuarioController {
 
     @GetMapping("/find/{id}")
     public ResponseEntity<Usuario> unPaciente(@PathVariable Long id) {
-        Usuario paciente = pacienteService.encontrarUnPaciente(id);
+        Usuario paciente = usuarioService.encontrarUnPaciente(id);
         if (paciente != null) {
             return ResponseEntity.ok(paciente); // Respuesta con código de estado 200 (OK)
         } else {
@@ -58,7 +61,7 @@ public class UsuarioController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> borrarPaciente(@PathVariable Long id) {
-        pacienteService.borrarUnPaciente(id);
+        usuarioService.borrarUnPaciente(id);
         return ResponseEntity.ok("Paciente eliminado con exito");
     }
 
@@ -66,28 +69,26 @@ public class UsuarioController {
     public ResponseEntity<Usuario> modificarPaciente(@PathVariable Long id,
             @RequestParam("nombre") String nuevoNombre,
             @RequestParam("apellido") String nuevoApellido,
-            @RequestParam("fecha_nac") LocalDate nuevaFecha,
-            @RequestParam("dni") int nuevoDni,
+            @RequestParam("nombre_usuario") String nuevoNombreUsuario,
             @RequestParam("email") String nuevoEmail,
-            @RequestParam("telefono") int nuevoTelefono) {
+            @RequestParam("password") String nuevoPassword) {
 
-        Usuario paciente = pacienteService.encontrarUnPaciente(id);
-        if (paciente != null) {
-            paciente.setNombre(nuevoNombre);
-            paciente.setApellido(nuevoApellido);
-            paciente.setFecha_nac(nuevaFecha);
-            paciente.setDni(nuevoDni);
-            paciente.setEmail(nuevoEmail);
-            paciente.setTelefono(nuevoTelefono);
+        Usuario usuario = usuarioService.encontrarUnPaciente(id);
+        if (usuario != null) {
+            usuario.setNombre(nuevoNombre);
+            usuario.setApellido(nuevoApellido);
+            usuario.setNombre_usuario(nuevoNombreUsuario);
+            usuario.setEmail(nuevoEmail);
+            usuario.setPassword(nuevoPassword);
 
-            pacienteService.crearPaciente(paciente);
+            usuarioService.crearPaciente(usuario);
 
-            return ResponseEntity.ok(paciente);
+            return ResponseEntity.ok(usuario);
         } else {
             Usuario pacienteError = new Usuario();
             String mensajeError = "El paciente con el ID " + id + " no existe.";
             pacienteError.setNombre(mensajeError);//llevo el error en el atributo nombre del objeto terapeuta
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(paciente);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(usuario);
         }
 
     }
