@@ -26,18 +26,12 @@ public class Usuario {
     private String nombre;
     @Column(columnDefinition = "VARCHAR(50)")
     private String apellido;
-    @Column(columnDefinition = "DATE")
-    private LocalDate fecha_nac;
-    @Column(columnDefinition = "INT")
-    private int dni;
+    @Column(columnDefinition = "VARCHAR(50)")
+    private String nombre_usuario;
     @Column(columnDefinition = "VARCHAR(50)")
     private String email;
-    @Column(columnDefinition = "INT")
-    private int telefono;
     @Column(columnDefinition = "VARCHAR(50)")
-    private String obra_social;
-    
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Turnos> turnos;
+    private String password;
+    @Column(columnDefinition = "INT")
+    private Long id_tipoUsuario;
 }
