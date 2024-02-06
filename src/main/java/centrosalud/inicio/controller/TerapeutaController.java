@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -71,9 +70,7 @@ public class TerapeutaController {
             terapeutaService.nuevoTerapeuta(terapeuta);
             return ResponseEntity.ok(terapeuta);
         } else {
-            Terapeuta terapeutaError = new Terapeuta();
-            String mensajeError = "El terapeuta con el ID " + id + " no existe.";
-            terapeutaError.setNombre(mensajeError);//llevo el error en el atributo nombre del objeto terapeuta
+            
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(terapeuta);
         }
 

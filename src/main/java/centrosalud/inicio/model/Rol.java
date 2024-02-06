@@ -9,18 +9,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
 @Entity
+@Getter @Setter
 @Table(name = "roles")
-class Rol {
+public class Rol {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @Column(columnDefinition = "VARCHAR(20)")
     private String nombreRol;
+    @OneToMany(mappedBy="rol")
+    private Set<Usuario> usuario;
+    @OneToMany(mappedBy="rol")
+    private List<Authorization> autorizacion;
 }

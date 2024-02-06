@@ -1,11 +1,7 @@
 
 package centrosalud.inicio.service;
 
-import centrosalud.inicio.dto.TurnosDisponiblesDTO;
 import centrosalud.inicio.model.DisponibilidadTerapeuta;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 
