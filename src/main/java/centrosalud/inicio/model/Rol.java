@@ -4,6 +4,7 @@
  */
 package centrosalud.inicio.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,5 +30,6 @@ public class Rol {
     @OneToMany(mappedBy="rol")
     private Set<Usuario> usuario;
     @OneToMany(mappedBy="rol")
+    @JsonIgnore
     private List<Authorization> autorizacion;
 }
