@@ -24,7 +24,7 @@ public class Rol {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long id;    
     @Column(columnDefinition = "VARCHAR(20)")
     private String nombreRol;
     @OneToMany(mappedBy="rol")

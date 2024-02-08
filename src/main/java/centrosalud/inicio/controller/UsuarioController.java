@@ -1,6 +1,8 @@
 package centrosalud.inicio.controller;
 
+import centrosalud.inicio.model.Rol;
 import centrosalud.inicio.model.Usuario;
+import centrosalud.inicio.service.IRolService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,11 +25,14 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
+    @Autowired
+    private IRolService rolServ;
 
     @PostMapping("/save")
     public ResponseEntity<String> nuevoPaciente(@RequestBody Usuario usuario) {
-        if(usuario.getId_tipoUsuario()== null){
-            usuario.setId_tipoUsuario(Long.valueOf(0));
+        if(usuario.getRol()== null){
+            Rol asignarRol = rolServ.encontrarUnRol(1L);
+            usuario.setRol(asignarRol);
         }
         usuarioService.crearPaciente(usuario);
         return ResponseEntity.ok("Usuario creado con exito");
@@ -50,10 +55,7 @@ public class UsuarioController {
         if (paciente != null) {
             return ResponseEntity.ok(paciente); // Respuesta con código de estado 200 (OK)
         } else {
-            Usuario pacienteError = new Usuario();
-            String mensajeError = "El paciente con el ID " + id + " no existe.";
-            pacienteError.setNombre(mensajeError);//llevo el error en el atributo nombre del objeto terapeuta
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(paciente);
+            return ResponseEntity.notFound().build();
         }
     }
 

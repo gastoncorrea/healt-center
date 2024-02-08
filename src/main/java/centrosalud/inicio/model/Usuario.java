@@ -29,8 +29,6 @@ public class Usuario {
     private String email;
     @Column(columnDefinition = "VARCHAR(50)")
     private String password;
-    @Column(columnDefinition = "INT")
-    private Long id_tipoUsuario;
     @ManyToOne
     @JoinColumn(name="rol_id")
     private Rol rol;
