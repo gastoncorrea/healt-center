@@ -4,6 +4,7 @@ package centrosalud.inicio.service;
 import centrosalud.inicio.model.Authorization;
 import centrosalud.inicio.repository.AuthorizationRepository;
 import java.util.List;
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,19 @@ public class AuthorizationService implements IAuthorizationService {
     @Override
     public void eliminarUnaAutorizacion(Long id) {
         authRepo.deleteById(id);
+    }
+
+    @Override
+    public Authorization encontrarXEmail(String email) {
+        Authorization unaAutorizacion = authRepo.findByEmail(email);
+        return unaAutorizacion;
+    }
+    
+    @Override
+    public int generarCodigo(){
+        Random randomNumber = new Random();
+        int codigo = 1000 + randomNumber.nextInt(9000);
+        return codigo;
     }
     
     

@@ -15,4 +15,8 @@ public interface IAuthorizationService {
     
     public void eliminarUnaAutorizacion(Long id);
     
+    public Authorization encontrarXEmail(String email);
+    
+    public int generarCodigo();
+    
 }

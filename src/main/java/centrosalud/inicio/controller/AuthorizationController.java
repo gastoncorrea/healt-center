@@ -1,8 +1,10 @@
-
 package centrosalud.inicio.controller;
 
 import centrosalud.inicio.model.Authorization;
+import centrosalud.inicio.model.Rol;
 import centrosalud.inicio.service.IAuthorizationService;
+import centrosalud.inicio.service.IMailService;
+import centrosalud.inicio.service.IRolService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,25 +20,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 public class AuthorizationController {
-    
+
     @Autowired
     private IAuthorizationService authServ;
-    
+    @Autowired
+    private IRolService rolServ;
+    @Autowired
+    private IMailService mailServ;
+
     @PostMapping("/save")
-    public ResponseEntity<String> guardarAutorizacion(@RequestBody Authorization auth){
+    public ResponseEntity<String> guardarAutorizacion(@RequestBody Authorization auth) {
         authServ.crearAutorizacion(auth);
-        return ResponseEntity.status(HttpStatus.CREATED ).body("Nueva autorizacion creada con exito");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Nueva autorizacion creada con exito");
     }
-    
+
     @GetMapping("/all")
-    public ResponseEntity<List<Authorization>> todasLasAutorizaciones(){
+    public ResponseEntity<List<Authorization>> todasLasAutorizaciones() {
         List<Authorization> listaDeAutorizaciones = authServ.mostrarTodasLasAutorizaciones();
-        return ResponseEntity.ok(listaDeAutorizaciones);
+        if(listaDeAutorizaciones != null){
+            return ResponseEntity.ok(listaDeAutorizaciones);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+        
     }
-    
+
     @GetMapping("/find/{id}")
     public ResponseEntity<Authorization> unAuth(@PathVariable Long id) {
         Authorization unaAutorizacion = authServ.encontrarUnaAutorizacion(id);
@@ -50,7 +61,7 @@ public class AuthorizationController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> borrarAuth(@PathVariable Long id) {
         authServ.eliminarUnaAutorizacion(id);
-        return ResponseEntity.ok("Paciente eliminado con exito");
+        return ResponseEntity.ok("Autorización eliminada con exito");
     }
 
     @PutMapping("/update/{id}")
@@ -58,14 +69,20 @@ public class AuthorizationController {
             @RequestBody Authorization nuevaAuth) {
 
         Authorization unaAutorizacion = authServ.encontrarUnaAutorizacion(id);
+        
         if (unaAutorizacion != null) {
-           
+            if (!nuevaAuth.getRol().getId().equals(unaAutorizacion.getId())) {
+                Rol encontrarUnRol = rolServ.encontrarUnRol(nuevaAuth.getRol().getId());
+                if (encontrarUnRol != null) {
+                    unaAutorizacion.setRol(encontrarUnRol);
+                }
+            }
+
             unaAutorizacion.setEmail(nuevaAuth.getEmail());
             unaAutorizacion.setCodigo(nuevaAuth.getCodigo());
-            unaAutorizacion.getRol().setId(nuevaAuth.getRol().getId());
 
             authServ.crearAutorizacion(unaAutorizacion);
-            
+
             return ResponseEntity.ok(unaAutorizacion);
         } else {
             return ResponseEntity.notFound().build();
@@ -73,4 +90,19 @@ public class AuthorizationController {
 
     }
     
+    @GetMapping("/autorization/{email}")
+    public ResponseEntity<Boolean> devolverCodigo(@PathVariable String email){
+        Authorization unaAutorizacion = authServ.encontrarXEmail(email);
+        if(unaAutorizacion != null){
+            int codigo = authServ.generarCodigo();
+            unaAutorizacion.setCodigo(codigo);
+            authServ.crearAutorizacion(unaAutorizacion);
+            mailServ.sendMail(email, codigo);
+            return ResponseEntity.ok(true);
+        }else{
+            return ResponseEntity.badRequest().body(false);
+        }
+        
+    }
+
 }
