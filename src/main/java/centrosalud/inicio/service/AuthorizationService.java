@@ -2,6 +2,7 @@
 package centrosalud.inicio.service;
 
 import centrosalud.inicio.model.Authorization;
+import centrosalud.inicio.model.Rol;
 import centrosalud.inicio.repository.AuthorizationRepository;
 import java.util.List;
 import java.util.Random;

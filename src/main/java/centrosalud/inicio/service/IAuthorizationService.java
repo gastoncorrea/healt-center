@@ -2,6 +2,7 @@
 package centrosalud.inicio.service;
 
 import centrosalud.inicio.model.Authorization;
+import centrosalud.inicio.model.Rol;
 import java.util.List;
 
 
@@ -18,5 +19,6 @@ public interface IAuthorizationService {
     public Authorization encontrarXEmail(String email);
     
     public int generarCodigo();
+
     
 }

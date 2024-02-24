@@ -27,6 +27,7 @@ public class Rol {
     private Long id;    
     @Column(columnDefinition = "VARCHAR(20)")
     private String nombreRol;
+    @JsonIgnore
     @OneToMany(mappedBy="rol")
     private Set<Usuario> usuario;
     @OneToMany(mappedBy="rol")
