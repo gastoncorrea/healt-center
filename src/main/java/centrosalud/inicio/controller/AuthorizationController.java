@@ -1,5 +1,6 @@
 package centrosalud.inicio.controller;
 
+import centrosalud.inicio.dto.AuthorizationDto;
 import centrosalud.inicio.model.Authorization;
 import centrosalud.inicio.model.Rol;
 import centrosalud.inicio.service.IAuthorizationService;
@@ -91,18 +92,35 @@ public class AuthorizationController {
     }
     
     @GetMapping("/autorization/{email}")
-    public ResponseEntity<Boolean> devolverCodigo(@PathVariable String email){
+    public ResponseEntity<AuthorizationDto> devolverCodigo(@PathVariable String email){
         Authorization unaAutorizacion = authServ.encontrarXEmail(email);
         if(unaAutorizacion != null){
             int codigo = authServ.generarCodigo();
             unaAutorizacion.setCodigo(codigo);
             authServ.crearAutorizacion(unaAutorizacion);
             mailServ.sendMail(email, codigo);
-            return ResponseEntity.ok(true);
+            AuthorizationDto authResp = new AuthorizationDto();
+            authResp.setId(unaAutorizacion.getId());
+            authResp.setEmail(unaAutorizacion.getEmail());
+            return ResponseEntity.ok(authResp);
         }else{
-            return ResponseEntity.badRequest().body(false);
+            return ResponseEntity.notFound().build();
         }
         
+    }
+    
+    @PostMapping("/authorization/codigo")
+    public ResponseEntity<Rol> validarCodigo(@RequestBody Authorization auth){
+        Authorization unaAutorizacion = authServ.encontrarXEmail(auth.getEmail());
+        if(unaAutorizacion != null){
+            if(unaAutorizacion.getCodigo()== auth.getCodigo()){
+                return ResponseEntity.ok(unaAutorizacion.getRol());
+            }else{
+                return ResponseEntity.notFound().build();
+            }
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
