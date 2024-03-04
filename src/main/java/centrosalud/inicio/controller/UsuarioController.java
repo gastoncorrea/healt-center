@@ -22,22 +22,25 @@ import centrosalud.inicio.service.IUsuarioService;
 @CrossOrigin(origins = "*")
 @RequestMapping("/usuario")
 public class UsuarioController {
-
+    
     @Autowired
     private IUsuarioService usuarioService;
     @Autowired
     private IRolService rolServ;
-
+    
     @PostMapping("/save")
     public ResponseEntity<String> nuevoPaciente(@RequestBody Usuario usuario) {
-        if(usuario.getRol()== null){
+        if (usuario.getRol().getId() != null) {
+            usuarioService.crearPaciente(usuario);
+        } else {
             Rol asignarRol = rolServ.encontrarUnRol(1L);
-            usuario.setRol(asignarRol);
+            usuario.getRol().setId(asignarRol.getId());
+            usuarioService.crearPaciente(usuario);
         }
-        usuarioService.crearPaciente(usuario);
+        
         return ResponseEntity.ok("Usuario creado con exito");
     }
-
+    
     @GetMapping("/all")
     public ResponseEntity<List<Usuario>> todosLosPacientes() {
         List<Usuario> listaDePacientes = usuarioService.traerTodosLosPacientes();
@@ -46,9 +49,9 @@ public class UsuarioController {
         } else {
             return ResponseEntity.badRequest().body(listaDePacientes);
         }
-
+        
     }
-
+    
     @GetMapping("/find/{id}")
     public ResponseEntity<Usuario> unPaciente(@PathVariable Long id) {
         Usuario paciente = usuarioService.encontrarUnPaciente(id);
@@ -58,17 +61,17 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> borrarPaciente(@PathVariable Long id) {
         usuarioService.borrarUnPaciente(id);
         return ResponseEntity.ok("Paciente eliminado con exito");
     }
-
+    
     @PutMapping("/update/{id}")
     public ResponseEntity<Usuario> modificarPaciente(@PathVariable Long id,
             @RequestBody Usuario nuevoUsuario) {
-
+        
         Usuario usuario = usuarioService.encontrarUnPaciente(id);
         if (usuario != null) {
             usuario.setNombre(nuevoUsuario.getNombre());
@@ -76,9 +79,9 @@ public class UsuarioController {
             usuario.setNombre_usuario(nuevoUsuario.getNombre_usuario());
             usuario.setEmail(nuevoUsuario.getEmail());
             usuario.setPassword(nuevoUsuario.getPassword());
-
+            
             usuarioService.crearPaciente(usuario);
-
+            
             return ResponseEntity.ok(usuario);
         } else {
             Usuario pacienteError = new Usuario();
@@ -86,6 +89,6 @@ public class UsuarioController {
             pacienteError.setNombre(mensajeError);//llevo el error en el atributo nombre del objeto terapeuta
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(usuario);
         }
-
+        
     }
 }
