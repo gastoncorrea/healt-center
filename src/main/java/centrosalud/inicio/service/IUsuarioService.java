@@ -14,4 +14,8 @@ public interface IUsuarioService {
     public Usuario encontrarUnPaciente(Long id);
     
     public void borrarUnPaciente(Long id);
+    
+    public Usuario encontrarXNombreDeUsuario(String nombreUsuario);
+    
+    public Usuario encontrarXEmail(String email);
 }

@@ -23,11 +23,11 @@ public class Usuario {
     private String nombre;
     @Column(columnDefinition = "VARCHAR(50)")
     private String apellido;
-    @Column(columnDefinition = "VARCHAR(50)")
-    private String nombre_usuario;
-    @Column(columnDefinition = "VARCHAR(50)")
+    @Column(unique = true , columnDefinition = "VARCHAR(50)", nullable = false)
+    private String nombreUsuario;
+    @Column(unique = true , columnDefinition = "VARCHAR(50)" , nullable = false)
     private String email;
-    @Column(columnDefinition = "VARCHAR(50)")
+    @Column(columnDefinition = "VARCHAR(50)" , nullable = false)
     private String password;
     @ManyToOne
     @JoinColumn(name="rol_id")

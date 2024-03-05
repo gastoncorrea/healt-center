@@ -42,6 +42,18 @@ public class UsuarioService implements IUsuarioService {
         pacienteRepository.deleteById(id);
         
     }
+
+    @Override
+    public Usuario encontrarXNombreDeUsuario(String nombreUsuario) {
+        Usuario usuario = pacienteRepository.findByNombreUsuario(nombreUsuario);
+        return usuario;
+    }
+
+    @Override
+    public Usuario encontrarXEmail(String email) {
+        Usuario usuario = pacienteRepository.findByEmail(email);
+        return usuario;
+    }
     
     
 }

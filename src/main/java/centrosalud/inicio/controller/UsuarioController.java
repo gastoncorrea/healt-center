@@ -1,5 +1,6 @@
 package centrosalud.inicio.controller;
 
+import centrosalud.inicio.dto.LoginDTO;
 import centrosalud.inicio.model.Rol;
 import centrosalud.inicio.model.Usuario;
 import centrosalud.inicio.service.IRolService;
@@ -29,7 +30,7 @@ public class UsuarioController {
     private IRolService rolServ;
     
     @PostMapping("/save")
-    public ResponseEntity<String> nuevoPaciente(@RequestBody Usuario usuario) {
+    public ResponseEntity<String> nuevoUsuario(@RequestBody Usuario usuario) {
         if (usuario.getRol().getId() != null) {
             usuarioService.crearPaciente(usuario);
         } else {
@@ -42,7 +43,7 @@ public class UsuarioController {
     }
     
     @GetMapping("/all")
-    public ResponseEntity<List<Usuario>> todosLosPacientes() {
+    public ResponseEntity<List<Usuario>> todosLosUsuarios() {
         List<Usuario> listaDePacientes = usuarioService.traerTodosLosPacientes();
         if (listaDePacientes != null) {
             return ResponseEntity.ok(listaDePacientes);
@@ -53,7 +54,7 @@ public class UsuarioController {
     }
     
     @GetMapping("/find/{id}")
-    public ResponseEntity<Usuario> unPaciente(@PathVariable Long id) {
+    public ResponseEntity<Usuario> unUsuario(@PathVariable Long id) {
         Usuario paciente = usuarioService.encontrarUnPaciente(id);
         if (paciente != null) {
             return ResponseEntity.ok(paciente); // Respuesta con código de estado 200 (OK)
@@ -63,20 +64,20 @@ public class UsuarioController {
     }
     
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> borrarPaciente(@PathVariable Long id) {
+    public ResponseEntity<String> borrarUsuario(@PathVariable Long id) {
         usuarioService.borrarUnPaciente(id);
         return ResponseEntity.ok("Paciente eliminado con exito");
     }
     
     @PutMapping("/update/{id}")
-    public ResponseEntity<Usuario> modificarPaciente(@PathVariable Long id,
+    public ResponseEntity<Usuario> modificarUsuario(@PathVariable Long id,
             @RequestBody Usuario nuevoUsuario) {
         
         Usuario usuario = usuarioService.encontrarUnPaciente(id);
         if (usuario != null) {
             usuario.setNombre(nuevoUsuario.getNombre());
             usuario.setApellido(nuevoUsuario.getApellido());
-            usuario.setNombre_usuario(nuevoUsuario.getNombre_usuario());
+            usuario.setNombreUsuario(nuevoUsuario.getNombreUsuario());
             usuario.setEmail(nuevoUsuario.getEmail());
             usuario.setPassword(nuevoUsuario.getPassword());
             
@@ -91,4 +92,23 @@ public class UsuarioController {
         }
         
     }
+    
+    @PostMapping("/login")
+    public ResponseEntity<Boolean> validarCredenciales(@RequestBody LoginDTO usuario){
+        
+        String nombreUsuario = usuario.getNombreUsuario();
+        String email = usuario.getEmail();
+        String password = usuario.getPassword();
+        
+        Usuario findUsuario = usuarioService.encontrarXNombreDeUsuario(nombreUsuario);
+        if(findUsuario != null && findUsuario.getPassword().equals(password)){
+            return ResponseEntity.ok(true);
+        }else{
+            Usuario findUsuarioEmail = usuarioService.encontrarXEmail(email);
+            if(findUsuarioEmail != null && findUsuarioEmail.getPassword().equals(password)){
+                return ResponseEntity.ok(true);
+            }
+        }
+        return ResponseEntity.badRequest().body(false);
+    } 
 }
