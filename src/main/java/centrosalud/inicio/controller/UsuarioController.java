@@ -96,15 +96,14 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<Boolean> validarCredenciales(@RequestBody LoginDTO usuario){
         
-        String nombreUsuario = usuario.getNombreUsuario();
-        String email = usuario.getEmail();
+        String nombreEmailUsuario = usuario.getNombreEmailUsuario();
         String password = usuario.getPassword();
         
-        Usuario findUsuario = usuarioService.encontrarXNombreDeUsuario(nombreUsuario);
+        Usuario findUsuario = usuarioService.encontrarXNombreDeUsuario(nombreEmailUsuario);
         if(findUsuario != null && findUsuario.getPassword().equals(password)){
             return ResponseEntity.ok(true);
         }else{
-            Usuario findUsuarioEmail = usuarioService.encontrarXEmail(email);
+            Usuario findUsuarioEmail = usuarioService.encontrarXEmail(nombreEmailUsuario);
             if(findUsuarioEmail != null && findUsuarioEmail.getPassword().equals(password)){
                 return ResponseEntity.ok(true);
             }
